@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#090909">
+<title>Growth Journey — Luxury Habit Tracker</title>
+<style>
+:root{--bg:#090909;--card:#141414;--card2:#1b1b1b;--gold:#d6b56d;--gold2:#f5df9b;--muted:#aaa;--line:#383024;--white:#f7f4ed}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#211b10 0,#090909 48%);color:var(--white);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;min-height:100vh}
+.wrap{max-width:760px;margin:auto;padding:22px 16px 42px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}.brand{display:flex;align-items:center;gap:12px}.logo{width:48px;height:48px;border-radius:15px;background:linear-gradient(135deg,var(--gold2),#9b7735);color:#100d07;display:grid;place-items:center;font-size:24px;font-weight:900;box-shadow:0 5px 28px #d6b56d22}.brandname{font-weight:800;letter-spacing:.08em;font-size:14px}.sub{color:var(--muted);font-size:12px;margin-top:3px}.btn{border:1px solid #5b4828;background:#19150e;color:var(--gold2);border-radius:11px;padding:11px 14px;font-weight:700;font-size:13px;cursor:pointer}.hero{border:1px solid #5b4828;border-radius:24px;padding:25px 20px;background:linear-gradient(135deg,#201a10,#111);box-shadow:0 18px 45px #0008;margin-bottom:18px}.eyebrow{color:var(--gold);font-size:11px;font-weight:800;letter-spacing:.2em;text-transform:uppercase}.hero h1{font-size:clamp(30px,7vw,44px);line-height:1.08;margin:13px 0}.hero p{color:#bdb7aa;line-height:1.55;margin:0;max-width:520px}.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:22px}.stat{background:#0c0c0caa;border:1px solid #393024;border-radius:15px;padding:14px 12px}.stat strong{display:block;font-size:25px;color:var(--gold2)}.stat span{font-size:11px;color:#aaa}.sectionhead{display:flex;align-items:end;justify-content:space-between;gap:10px;margin:24px 2px 10px}.sectionhead h2{font-size:18px;margin:0}.small{font-size:12px;color:var(--muted)}.panel{background:var(--card);border:1px solid #302a20;border-radius:19px;padding:16px;margin-bottom:12px}.progressrow{display:flex;justify-content:space-between;gap:10px;font-size:13px;margin-bottom:10px}.track{height:8px;background:#302a20;border-radius:99px;overflow:hidden}.fill{height:100%;width:0;background:linear-gradient(90deg,#a98237,var(--gold2));transition:width .2s}.habit{display:flex;align-items:center;gap:12px;padding:14px 12px;background:var(--card);border:1px solid #302a20;border-radius:16px;margin-bottom:9px}.check{width:27px;height:27px;border:1px solid #6b552f;border-radius:9px;flex:none;background:#0b0b0b;color:#111;display:grid;place-items:center;font-weight:900;cursor:pointer}.habit.done .check{background:linear-gradient(135deg,var(--gold2),#b38b43);border-color:var(--gold2)}.habit.done .htitle{text-decoration:line-through;color:#9e9688}.htext{flex:1;min-width:0}.htitle{font-weight:700;font-size:14px}.hint{font-size:12px;color:var(--muted);margin-top:4px}.remove{border:0;background:transparent;color:#8f887a;font-size:20px;padding:4px 7px;cursor:pointer}.addrow{display:flex;gap:8px;margin-top:12px}.addrow input{min-width:0;flex:1;background:#0b0b0b;border:1px solid #493b25;border-radius:11px;padding:12px;color:white;font-size:14px}.quote{color:var(--gold2);font-size:14px;line-height:1.6}.footer{text-align:center;color:#746d60;font-size:11px;margin-top:24px}@media(min-width:620px){.hero{padding:32px}.panel{padding:19px}.wrap{padding-top:30px}}
+</style>
+</head>
+<body><main class="wrap">
+<header class="top"><div class="brand"><div class="logo">GJ</div><div><div class="brandname">GROWTH JOURNEY</div><div class="sub">Discipline • Focus • Progress</div></div></div><button class="btn" id="reset">Reset today</button></header>
+<section class="hero"><div class="eyebrow">Your personal system</div><h1>Build a life<br>you’re proud of.</h1><p>Small promises kept daily become extraordinary change. Track your habits, protect your focus, and keep moving forward.</p><div class="stats"><div class="stat"><strong id="doneCount">0/5</strong><span>Completed today</span></div><div class="stat"><strong id="percent">0%</strong><span>Daily progress</span></div><div class="stat"><strong id="streak">0</strong><span>Perfect days</span></div></div></section>
+<div class="sectionhead"><h2>Today’s habits</h2><span class="small" id="today"></span></div>
+<section class="panel"><div class="progressrow"><span>Daily completion</span><strong id="progressLabel">0%</strong></div><div class="track"><div class="fill" id="fill"></div></div></section>
+<section id="habits"></section>
+<section class="panel"><div class="sectionhead" style="margin-top:0"><h2>Add a habit</h2><span class="small">Make it doable</span></div><div class="addrow"><input id="newHabit" maxlength="70" placeholder="e.g. Read 10 pages" aria-label="New habit"><button class="btn" id="addBtn">Add</button></div></section>
+<section class="panel"><div class="eyebrow">Daily reminder</div><p class="quote" id="quote">“Great things are done by a series of small things brought together.”</p></section>
+<div class="footer">Your progress is saved on this device • Growth Journey</div>
+</main>
+<script>
+const defaults=[
+{id:'water',title:'Drink enough water',hint:'Take care of your body'},
+{id:'move',title:'Exercise or walk',hint:'Move for at least 20 minutes'},
+{id:'learn',title:'Learn something useful',hint:'Read, study, or practise'},
+{id:'focus',title:'Deep work session',hint:'One focused session without distractions'},
+{id:'reflect',title:'Plan tomorrow',hint:'Review today and choose one priority'}
+];
+const quotes=[
+'“Great things are done by a series of small things brought together.”',
+'“You do not rise to the level of your goals. You fall to the level of your systems.”',
+'“The secret of getting ahead is getting started.”',
+'“Small steps every day add up to big change.”'
+];
+const todayKey=new Date().toLocaleDateString('en-CA');
+let habits;try{habits=JSON.parse(localStorage.getItem('gj_luxury_habits')||'null')||defaults}catch(e){habits=defaults}
+let checks={};try{checks=JSON.parse(localStorage.getItem('gj_luxury_checks')||'{}')}catch(e){}
+function save(){localStorage.setItem('gj_luxury_habits',JSON.stringify(habits));localStorage.setItem('gj_luxury_checks',JSON.stringify(checks))}
+function render(){
+ document.getElementById('today').textContent=new Date().toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'});
+ const todays=checks[todayKey]||{};const done=habits.filter(h=>todays[h.id]).length;const pct=habits.length?Math.round(done/habits.length*100):0;
+ document.getElementById('doneCount').textContent=done+'/'+habits.length;document.getElementById('percent').textContent=pct+'%';document.getElementById('progressLabel').textContent=pct+'%';document.getElementById('fill').style.width=pct+'%';
+ let streak=0;for(let i=0;i<365;i++){const d=new Date();d.setDate(d.getDate()-i);const k=d.toLocaleDateString('en-CA');const c=checks[k]||{};if(habits.length&&habits.every(h=>c[h.id]))streak++;else break}
+ document.getElementById('streak').textContent=streak;
+ const root=document.getElementById('habits');root.innerHTML='';
+ habits.forEach(h=>{const row=document.createElement('div');row.className='habit'+(todays[h.id]?' done':'');const check=document.createElement('button');check.className='check';check.textContent=todays[h.id]?'✓':'';check.setAttribute('aria-label','Toggle '+h.title);check.onclick=()=>{checks[todayKey]=checks[todayKey]||{};checks[todayKey][h.id]=!checks[todayKey][h.id];save();render()};
+ const text=document.createElement('div');text.className='htext';const title=document.createElement('div');title.className='htitle';title.textContent=h.title;const hint=document.createElement('div');hint.className='hint';hint.textContent=h.hint||'One small step forward';text.append(title,hint);
+ const del=document.createElement('button');del.className='remove';del.textContent='×';del.setAttribute('aria-label','Delete '+h.title);del.onclick=()=>{habits=habits.filter(x=>x.id!==h.id);save();render()};row.append(check,text,del);root.append(row)});
+ document.getElementById('quote').textContent=quotes[new Date().getDate()%quotes.length];
+}
+function addHabit(){const input=document.getElementById('newHabit');const title=input.value.trim();if(!title)return;habits.push({id:'h'+Date.now(),title,hint:'One small step forward'});input.value='';save();render()}
+document.getElementById('addBtn').addEventListener('click',addHabit);document.getElementById('newHabit').addEventListener('keydown',e=>{if(e.key==='Enter')addHabit()});
+document.getElementById('reset').addEventListener('click',()=>{if(confirm('Reset all checkmarks for today?')){checks[todayKey]={};save();render()}});
+render();
+</script></body></html>
